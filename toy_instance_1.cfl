@@ -1,0 +1,23 @@
+[CFLP-PROBLEMFILE]
+generated at:  Tue Jun 11 19:37:40 2024
+#customers: 5 ; #depot sites: 2 ; ratio: 1.00
+
+[DEPOTS]
+capacity fixcost varcost xcoord ycoord name
+76 946 0 23 607 Depot0
+45 670 0 836 825 Depot1
+
+[CUSTOMERS]
+demand xcoord ycoord name
+30 603 310 Customer0
+16 775 49 Customer1
+17 281 691 Customer2
+33 748 635 Customer3
+25 451 19 Customer4
+
+[COSTMATRIX]
+c= d_eucli(a,b) * 0.01
+[MATRIX]
+Dim 2 5
+195.4861 149.8260 46.1261 239.4284 181.8186 
+169.5767 124.5430 97.0611 69.0986 223.3077 
