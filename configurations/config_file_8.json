@@ -1,0 +1,9 @@
+{
+    "presolve": -1,
+    "heuristics": 0.01,
+    "branching": 3,
+    "node_selecion": 1,
+    "cuts": -1,
+    "gap": 0.0001,
+    "time": 300
+}

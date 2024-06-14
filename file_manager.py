@@ -1,6 +1,6 @@
 import os
 import sys
-import numpy
+import json
 
 def read_facility(line, caps, fixcos, pos_x, pos_y, names):
     """
@@ -127,3 +127,11 @@ def read_input_file(file_name):
 
         return (facility_data, points_to_attend_data, attend_costs_matrix)
             
+def read_config_file(file_name):
+    with open(file_name, "r") as config_file:
+        configuration_dict = json.load(config_file)
+    return configuration_dict
+
+def write_json(json_file_path, data):
+    with open(json_file_path, "w") as output:
+        json.dump(data, output)
