@@ -1,32 +1,67 @@
 import gurobipy
 
-def get_gurobi_params(config_file=None):
-    
-    # VarBranch (branching strategy)
-    ## -1. Default (automatically)
-    ##  0. Pseudo Reduced Cost Branching
-    ##  1. Pseudo Shadow Price Branching
-    ##  2. Maximum Infeasibility Branching
-    ##  3. Strong Branching
+def get_gurobi_params(config_dict=None):
+    ''' 
+    The following keys are extracted considered in config_dict (if they exist):
 
-    # BranchDir (node selection strategy)
-    ##  0. Default (automatically)
-    ## -1. will always explore the rounded down branch first
-    ##  1 will always explore the rounded up branch first
+    - branching (branching strategy - Gurobi VarBranch Param)
+        (-1) Default (automatically)
+        (0) Pseudo Reduced Cost Branching
+        (1) Pseudo Shadow Price Branching
+        (2) Maximum Infeasibility Branching
+        (3) Strong Branching
 
-    # Cuts (cuts intensisty)
-    ## -1 value chooses automatically
-    ##  0. to shut off cuts
-    ##  1. for moderate cut generation
-    ##  2. for aggressive cut generation
-    ##  3. for very aggressive cut generation
+    - branching_direction (branching direction - Gurobi BranchDir Param)
+        (0) Default (automatically)
+        (-1) will always explore the rounded down branch first
+        (1) will always explore the rounded up branch first
 
-    # TimeLimit
-    ## Limit time to execute
+    - cuts (cuts intensisty - Gurobi Cuts Param)
+        (-1) value chooses automatically
+        (0) to shut off cuts
+        (1) for moderate cut generation
+        (2) for aggressive cut generation
+        (3) for very aggressive cut generation
 
-    # MIPGap
-    ## Acceptable optimallity gap
+    - node_selecion (node selection strategy - Gurobi MIPFocus Param)
+         (0) default: balance between primal and dual
+         (1) focus on improving primal solution
+         (2) focus on improving dual solution
+         (3) focus on improving best bound
 
+    - time (Gurobi TimeLimit Param)
+        Limit time to execute
+
+    - gap (Gurobi MIPGap Param)
+        Acceptable optimallity gap
+
+    - heuristics (Gurobi Heuristics Param)
+        Percentage of time spent with heuristics
+
+    - presolve (Gurobi Presolve Param)
+        (-1) defaulf: automatic setting. 
+        (0) turn off presolve 
+        (1) conservative 
+        (2) aggressive
+
+    - log_file (Gurobi LogFile Param)
+        Name of the log file
+    - log_console (Gurobi LogToConsole Param)
+        (0) deactivate log in console
+        (1) activate log in console
+
+    Default Values:
+        VarBranch: -1 
+        BranchDir: 0
+        Cuts: -1
+        TimeLimit: gurobipy.GRB.INFINITY
+        MIPGap: 0.0001
+        Presolve: 0
+        Heuristics: 0.05
+        LogFile: ""
+        LogToConsole: 1
+        MIPFocus: 0
+    '''
     # print(gurobipy.Model().getParamInfo("VarBranch"))
     params = {
         "VarBranch": -1, 
@@ -34,18 +69,35 @@ def get_gurobi_params(config_file=None):
         "Cuts": -1,
         "TimeLimit": gurobipy.GRB.INFINITY,
         "MIPGap": 0.0001,
-        "Presolve": 0,
-        "Heuristics": 0.05
+        "Presolve": -1,
+        "Heuristics": 0.05,
+        "LogFile": "",
+        "MIPFocus": 0,
+        "LogToConsole": 1
     }
     
-    if (config_file is not None):            
-        params["VarBranch"] = config_file["branching"]
-        params["BranchDir"] = config_file["node_selecion"]
-        params["Cuts"] = config_file["cuts"]
-        params["Presolve"] = config_file["presolve"]
-        params["Heuristics"] = config_file["heuristics"]
-        params["TimeLimit"] = config_file["time"]
-        params["MIPGap"] = config_file["gap"]
+    if (config_dict is not None):
+        if ("branching" in config_dict.keys()):
+            params["VarBranch"] = config_dict["branching"]
+        if ("node_selecion" in config_dict.keys()):
+            params["BranchDir"] = config_dict["node_selecion"]
+        if ("cuts" in config_dict.keys()):
+            params["Cuts"] = config_dict["cuts"]
+        if ("presolve" in config_dict.keys()):
+            params["Presolve"] = config_dict["presolve"]
+        if ("heuristics" in config_dict.keys()):
+            params["Heuristics"] = config_dict["heuristics"]
+        if ("time" in config_dict.keys()):
+            params["TimeLimit"] = config_dict["time"]
+        if ("gap" in config_dict.keys()):
+            params["MIPGap"] = config_dict["gap"]
+        if ("log_file" in config_dict.keys()):
+            params["LogFile"] = config_dict["log_file"]
+        if ("focus" in config_dict.keys()):
+            params["MIPFocus"] = config_dict["focus"]
+        if ("log_console" in config_dict.keys()):
+            params["LogToConsole"] = config_dict["log_console"]
+
 
     return params
 
@@ -288,10 +340,6 @@ def create_model(
     )
     model.update()
 
-    a, b = variables
-
-    model.update
-
     return model
 
 
@@ -302,7 +350,6 @@ def get_solution_dict(model):
         "is_optimal": False,
         "inf_or_unb": False,
         "feasible_found": False,
-        "gap": None,
         "node_count": None,
         "total_time": None
     }
@@ -327,12 +374,28 @@ def get_solution_dict(model):
         data["variables"][v.VarName] = v.X
 
     if (model.status == gurobipy.GRB.OPTIMAL):
-        data["feasible_found"] = True
         data["is_optimal"] = True
-        data["gap"] = model.MIPGap
 
     data["feasible_found"] = True
     data["objective"] = model.getObjective().getValue()
-    data["gap"] = model.MIPGap
+    data["dual_bound"] = model.ObjBound
 
+    return data
+
+
+def get_linear_relaxation(model):
+    linear_model = model.relax()
+    linear_model.update()
+    return linear_model
+
+def get_solution_dict_linear(model):
+    data = get_solution_dict(model)
+    data["gap"] = None
+    return data
+
+def get_solution_dict_MIP(model):
+    data = get_solution_dict(model)
+    data["gap"] = None
+    if (data["is_optimal"] or "feasible_found"):
+        data["gap"] = model.MIPGap
     return data

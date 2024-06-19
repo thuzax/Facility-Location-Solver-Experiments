@@ -237,4 +237,5 @@ pyrightconfig.json
 *.cfl
 *.lp
 *_out.json
+*_out_linear.json
 results_main_data.json
