@@ -23,6 +23,32 @@ def get_gurobi_params(config_dict=None):
         (2) for aggressive cut generation
         (3) for very aggressive cut generation
 
+    - <cut_name>_cut (specific cut intensity - <cut_name> is the of the cut):
+        The default value for all cuts is -1
+        List of <cut_name> for each Gurobi Cut:
+            - bqp_cut => BQPCuts
+            - clique_cut => CliqueCuts
+            - cover_cut => CoverCuts
+            - flow_cover_cut => FlowCoverCuts
+            - flow_path_cut => FlowPathCuts
+            - gub_cover_cut => GUBCoverCuts
+            - implied_cut => ImpliedCuts
+            - inf_proof_cut => InfProofCuts
+            - lift_project_cut => LiftProjectCuts
+            - mip_sep_cut => MIPSepCuts
+            - mir_cut => MIRCuts
+            - mixing_cut => MixingCuts
+            - mod_k_cut => ModKCuts
+            - network_cut => NetworkCuts
+            - proj_implied_cut => ProjImpliedCuts
+            - psd_cut => PSDCuts
+            - relax_lift_cut => RelaxLiftCuts
+            - rlt_cut => RLTCuts
+            - strong_cg_cut => StrongCGCuts
+            - sub_mip_cut => SubMIPCuts
+            - zero_half_cut => ZeroHalfCuts
+        
+
     - node_selecion (node selection strategy - Gurobi MIPFocus Param)
          (0) default: balance between primal and dual
          (1) focus on improving primal solution
@@ -46,6 +72,7 @@ def get_gurobi_params(config_dict=None):
 
     - log_file (Gurobi LogFile Param)
         Name of the log file
+    
     - log_console (Gurobi LogToConsole Param)
         (0) deactivate log in console
         (1) activate log in console
@@ -73,7 +100,28 @@ def get_gurobi_params(config_dict=None):
         "Heuristics": 0.05,
         "LogFile": "",
         "MIPFocus": 0,
-        "LogToConsole": 1
+        "LogToConsole": 1,
+        "BQPCuts": -1,
+        "CliqueCuts": -1,
+        "CoverCuts": -1,
+        "FlowCoverCuts": -1,
+        "FlowPathCuts": -1,
+        "GUBCoverCuts": -1,
+        "ImpliedCuts": -1,
+        "InfProofCuts": -1,
+        "LiftProjectCuts": -1,
+        "MIPSepCuts": -1,
+        "MIRCuts": -1,
+        "MixingCuts": -1,
+        "ModKCuts": -1,
+        "NetworkCuts": -1,
+        "ProjImpliedCuts": -1,
+        "PSDCuts": -1,
+        "RelaxLiftCuts": -1,
+        "RLTCuts": -1,
+        "StrongCGCuts": -1,
+        "SubMIPCuts": -1,
+        "ZeroHalfCuts": -1
     }
     
     if (config_dict is not None):
@@ -97,7 +145,48 @@ def get_gurobi_params(config_dict=None):
             params["MIPFocus"] = config_dict["focus"]
         if ("log_console" in config_dict.keys()):
             params["LogToConsole"] = config_dict["log_console"]
-
+        if ("bqp_cut" in config_dict.keys()):
+            params["BQPCuts"] = config_dict["bqp_cut"]
+        if ("clique_cut" in config_dict.keys()):
+            params["CliqueCuts"] = config_dict["clique_cut"]
+        if ("cover_cut" in config_dict.keys()):
+            params["CoverCuts"] = config_dict["cover_cut"]
+        if ("flow_cover_cut" in config_dict.keys()):
+            params["FlowCoverCuts"] = config_dict["flow_cover_cut"]
+        if ("flow_path_cut" in config_dict.keys()):
+            params["FlowPathCuts"] = config_dict["flow_path_cut"]
+        if ("gub_cover_cut" in config_dict.keys()):
+            params["GUBCoverCuts"] = config_dict["gub_cover_cut"]
+        if ("implied_cut" in config_dict.keys()):
+            params["ImpliedCuts"] = config_dict["implied_cut"]
+        if ("inf_proof_cut" in config_dict.keys()):
+            params["InfProofCuts"] = config_dict["inf_proof_cut"]
+        if ("lift_project_cut" in config_dict.keys()):
+            params["LiftProjectCuts"] = config_dict["lift_project_cut"]
+        if ("mip_sep_cut" in config_dict.keys()):
+            params["MIPSepCuts"] = config_dict["mip_sep_cut"]
+        if ("mir_cut" in config_dict.keys()):
+            params["MIRCuts"] = config_dict["mir_cut"]
+        if ("mixing_cut" in config_dict.keys()):
+            params["MixingCuts"] = config_dict["mixing_cut"]
+        if ("mod_k_cut" in config_dict.keys()):
+            params["ModKCuts"] = config_dict["mod_k_cut"]
+        if ("network_cut" in config_dict.keys()):
+            params["NetworkCuts"] = config_dict["network_cut"]
+        if ("proj_implied_cut" in config_dict.keys()):
+            params["ProjImpliedCuts"] = config_dict["proj_implied_cut"]
+        if ("psd_cut" in config_dict.keys()):
+            params["PSDCuts"] = config_dict["psd_cut"]
+        if ("relax_lift_cut" in config_dict.keys()):
+            params["RelaxLiftCuts"] = config_dict["relax_lift_cut"]
+        if ("rlt_cut" in config_dict.keys()):
+            params["RLTCuts"] = config_dict["rlt_cut"]
+        if ("strong_cg_cut" in config_dict.keys()):
+            params["StrongCGCuts"] = config_dict["strong_cg_cut"]
+        if ("sub_mip_cut" in config_dict.keys()):
+            params["SubMIPCuts"] = config_dict["sub_mip_cut"]
+        if ("zero_half_cut" in config_dict.keys()):
+            params["ZeroHalfCuts"] = config_dict["zero_half_cut"]
 
     return params
 
