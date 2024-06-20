@@ -3,6 +3,37 @@ import sys
 import json
 import pandas
 
+def join_resumes_csv(args):
+    if (len(args) < 2):
+        print("Needs:")
+        print(" 1. Inputs Directory")
+        print(" 2. Output Directory")
+        exit(0)
+
+    resumes_dir = args[0]
+    output_dir = args[1]
+    csv_files_paths = []
+    for file_name in os.listdir(resumes_dir):
+        file_path = os.path.join(resumes_dir, file_name)
+        if (os.path.isfile(file_path) and file_path.split(".")[1] == "csv"):
+            csv_files_paths.append(file_path)
+
+    df_to_merge = [pandas.read_csv(file, header=None) for file in csv_files_paths]
+    df_to_merge = [
+        pandas.concat([
+            df_to_merge[i], 
+            pandas.DataFrame({col: [''] for col in df_to_merge[i].columns})
+        ], ignore_index=True)
+        for i in range(len(df_to_merge))
+    ]
+    csv_data_frame = pandas.concat(df_to_merge, axis=0, ignore_index=True)
+    
+    output_file = os.path.join(output_dir, "resume.csv")
+    csv_data_frame.to_csv(output_file, header=False, index=False)
+
+    
+
+
 def get_results_data(args):
     if (len(args) < 2):
         print("Needs:")

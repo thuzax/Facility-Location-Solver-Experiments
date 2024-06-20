@@ -1,0 +1,3 @@
+configuration_1,time,node_count,objective,feasible,is_optimal,dual_bound,gap
+T1500x300_10_1_configuration_1_out,10.126502990722656,1.0,443460.68270000024,True,False,0.0,1.0
+T1500x300_10_2_configuration_1_out,10.209776878356934,1.0,450484.61280000024,True,False,0.0,1.0

@@ -1,7 +1,7 @@
 import os
 import sys
 from main import run
-from get_results_data import get_results_data
+from get_results_data import get_results_data, join_resumes_csv
 from solve_relaxation import solve_relaxation
 
 
@@ -178,12 +178,7 @@ if __name__=="__main__":
             print_arguments(args)
             run(args)
     
-    # if (solve_relaxation_only):
-    #     get_results_data([
-    #         out_res_dir,
-    #         os.path.join(out_res_dir, "experiments_resume_data_out.json")
-    #     ])
-    # else:
+    resumes_dir = os.path.join(output_results_dir, "resumes")
     for j in range(len(configurations)):
         
         if (solve_relaxation_only):
@@ -192,9 +187,12 @@ if __name__=="__main__":
         config_name = os.path.basename(configurations[j]).split(".")[0]  
         resume_name = "resume_ " + config_name + "_data_out.json"
         
-        print(out_res_dir)
-        print(os.path.join(output_results_dir, resume_name))
+        if (not os.path.exists(resumes_dir)):
+            os.makedirs(resumes_dir)
+
         get_results_data([
             os.path.join(out_res_dir),
-            os.path.join(output_results_dir, resume_name)
+            os.path.join(resumes_dir, resume_name)
         ])
+
+    join_resumes_csv([resumes_dir, output_results_dir])
