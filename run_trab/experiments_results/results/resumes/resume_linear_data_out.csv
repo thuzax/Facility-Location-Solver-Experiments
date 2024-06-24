@@ -1,4 +1,4 @@
-5_out,time,node_count,objective,feasible,is_optimal,dual_bound,gap
+config_linear,time,node_count,objective,feasible,is_optimal,dual_bound,gap
 T1500x300_10_1_out_linear,33.62103796005249,0.0,49876.28912734978,True,True,49876.28912734978,-
 T1500x300_10_2_out_linear,33.662473917007446,0.0,51177.85943640969,True,True,51177.85943640969,-
 T1500x300_10_3_out_linear,33.97291803359985,0.0,50337.03011917845,True,True,50337.03011917845,-
