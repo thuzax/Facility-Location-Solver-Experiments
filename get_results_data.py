@@ -13,8 +13,9 @@ def join_resumes_csv(args):
     resumes_dir = args[0]
     output_dir = args[1]
     csv_files_paths = []
-    for file_name in os.listdir(resumes_dir):
+    for file_name in sorted(os.listdir(resumes_dir)):
         file_path = os.path.join(resumes_dir, file_name)
+        print(file_name)
         if (os.path.isfile(file_path) and file_path.split(".")[1] == "csv"):
             csv_files_paths.append(file_path)
 
@@ -30,7 +31,6 @@ def join_resumes_csv(args):
     
     output_file = os.path.join(output_dir, "resume.csv")
     csv_data_frame.to_csv(output_file, header=False, index=False)
-
     
 
 
@@ -53,7 +53,6 @@ def get_results_data(args):
     results_files = sorted(results_files)
     results_files_data = {}
     for result in results_files:
-        print(result)
         if (not os.path.isfile(result)):
             continue
         with open(result) as result_file:
@@ -79,10 +78,12 @@ def get_results_data(args):
     with open(output_file_name, "w") as output:
         json.dump(results_files_data, output, indent=4)
     
-    print(output_file_name)
     for name, data in results_files_data.items():
         header = results_files_data[name].keys()
-        config_name = "_".join(name.split(".")[0].split("_")[-3:-1])
+        if ("std" in name or "linear" in name):
+            config_name = results_dir
+        else:
+            config_name = "_".join(name.split(".")[0].split("_")[-3:-1])
         header = list(header)
         
     
@@ -93,9 +94,6 @@ def get_results_data(args):
         os.path.dirname(output_file_name), 
         output_csv_name
     )
-    
-    print(header)
-    print(results_files_data)
     
     with open(output_csv_name, "w") as output:
         csv_data = []
@@ -111,8 +109,6 @@ def get_results_data(args):
         data_frame.to_csv(output_csv_name, header=True, index=False)
         print(data_frame)
 
-if __name__=="__main__":
-    get_results_data(sys.argv[1:])
     
 
     

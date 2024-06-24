@@ -238,4 +238,7 @@ pyrightconfig.json
 *.lp
 *_out.json
 *_out_linear.json
+*_out.csv
+*_out_linear.csv
+*.csv
 results_main_data.json

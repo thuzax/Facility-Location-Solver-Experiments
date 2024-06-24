@@ -3,6 +3,7 @@ import os
 import sys
 import itertools
 import json
+import pandas
 
 def get_cuts(cuts_level=0):
     ''' 
@@ -68,6 +69,42 @@ def get_cuts(cuts_level=0):
 
     return cuts
 
+def get_branching_strategy_name(code):
+    if (code == -1):
+        return "Padrão"
+    if (code == 0):
+        return "PRCB"
+    if (code == 1):
+        return "PSPB"
+    if (code  == 2):
+        return "MIB"
+    if (code == 3):
+        return "SB"
+    return None
+
+
+def get_cuts_aggressiveness_name(code):
+    if (code == -1):
+        return "Padrão"
+    if (code == 0):
+        return "Desligado"
+    if (code == 1):
+        return "Moderado"
+    if (code == 2):
+        return "Agressivo"
+    return None
+
+def get_node_selection_strategy_name(code):
+    if (code == 0):
+        return "Balanceado P/D"
+    if (code == 1):
+        return "Primal"
+    if (code == 2):
+        return "Dual"
+    if (code == 3):
+        return "Bound"
+    return None
+
 if __name__=="__main__":
     if (len(sys.argv) < 2):
         print("Needs:")
@@ -99,7 +136,7 @@ if __name__=="__main__":
             "branching": combination[0],
             "node_selection": combination[2],
             "time": combination[3],
-            "presolve": combination[4]
+            "presolve": combination[4],
         }
         cuts = get_cuts(combination[1])
         for key, value in cuts.items():
@@ -123,3 +160,45 @@ if __name__=="__main__":
     for i in range(len(configurations_path)):
         with open(configurations_path[i], "w") as config_file:
             json.dump(configurations[i], config_file, indent=4)
+
+    csv_data = []
+    for i in range(len(configurations)):
+        if (i == 0):
+            continue
+
+        csv_data.append([])
+
+        csv_data[-1].append("Configuração " + str(i))
+
+        branching_name = get_branching_strategy_name(
+            configurations[i]["branching"]
+        )
+        
+        csv_data[-1].append(branching_name)
+        node_selection_name = get_node_selection_strategy_name(
+            configurations[i]["node_selection"]
+        )
+        csv_data[-1].append(node_selection_name)
+
+        cuts_aggressiveness_name = get_cuts_aggressiveness_name(
+            combinations[i-1][1]
+        )
+        csv_data[-1].append(cuts_aggressiveness_name)
+        
+
+    header=(
+        "Configuração", 
+        "Escolha de Var.",
+        "Escolha de Nó",
+        "Agressividade do Corte"
+    )
+    df = pandas.DataFrame(
+        csv_data, 
+        
+    )
+    csv_output_path = os.path.join(
+        os.path.dirname(output_dir), 
+        "configurations_data.csv"
+    )
+
+    df.to_csv(csv_output_path, header=header, index=False)

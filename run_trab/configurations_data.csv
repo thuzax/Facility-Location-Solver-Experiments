@@ -1,0 +1,25 @@
+Configuração,Escolha de Var.,Escolha de Nó,Agressividade do Corte
+Configuração 1,PRCB,Primal,Moderado
+Configuração 2,PRCB,Dual,Moderado
+Configuração 3,PRCB,Bound,Moderado
+Configuração 4,PRCB,Primal,Agressivo
+Configuração 5,PRCB,Dual,Agressivo
+Configuração 6,PRCB,Bound,Agressivo
+Configuração 7,PSPB,Primal,Moderado
+Configuração 8,PSPB,Dual,Moderado
+Configuração 9,PSPB,Bound,Moderado
+Configuração 10,PSPB,Primal,Agressivo
+Configuração 11,PSPB,Dual,Agressivo
+Configuração 12,PSPB,Bound,Agressivo
+Configuração 13,MIB,Primal,Moderado
+Configuração 14,MIB,Dual,Moderado
+Configuração 15,MIB,Bound,Moderado
+Configuração 16,MIB,Primal,Agressivo
+Configuração 17,MIB,Dual,Agressivo
+Configuração 18,MIB,Bound,Agressivo
+Configuração 19,SB,Primal,Moderado
+Configuração 20,SB,Dual,Moderado
+Configuração 21,SB,Bound,Moderado
+Configuração 22,SB,Primal,Agressivo
+Configuração 23,SB,Dual,Agressivo
+Configuração 24,SB,Bound,Agressivo

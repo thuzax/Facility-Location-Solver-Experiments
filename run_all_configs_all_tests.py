@@ -151,7 +151,7 @@ if __name__=="__main__":
             ]
 
             print_arguments(args)
-            solve_relaxation(args)
+            # solve_relaxation(args)
             continue
 
         for j in range(len(configurations)):
@@ -176,15 +176,17 @@ if __name__=="__main__":
             ]
 
             print_arguments(args)
-            run(args)
+            # run(args)
     
     resumes_dir = os.path.join(output_results_dir, "resumes")
     for j in range(len(configurations)):
         
         if (solve_relaxation_only):
             config_name = "linear"
-      
+
         config_name = os.path.basename(configurations[j]).split(".")[0]  
+        
+        out_res_dir = os.path.join(output_results_dir, config_name)
         resume_name = "resume_ " + config_name + "_data_out.json"
         
         if (not os.path.exists(resumes_dir)):
