@@ -241,4 +241,5 @@ pyrightconfig.json
 *_out.csv
 *_out_linear.csv
 *.csv
+*.zip
 results_main_data.json
